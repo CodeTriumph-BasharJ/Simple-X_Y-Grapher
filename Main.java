@@ -40,6 +40,11 @@ public class Main {
         System.out.println("Input File Address: ");
         String fileName = scan.nextLine();
         Path path = Paths.get(fileName);
+        if(path.toString().contains(".csv")){
+            System.out.println("Please Input a .csv file only.");
+            System.exit(0);
+            
+        }
         return read_file(path);
         
         
