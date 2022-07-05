@@ -137,7 +137,7 @@ public class Graphing extends JPanel {
     for(int i = 0; i < coordinates.size() - 1; i+=2)
         plot.draw(new Ellipse2D.Double(coordinates.get(i),coordinates.get(i+1),7,7));
             
-       System.out.println(coordinates);
+       
     }
     
     private List<Double> x_interval(int size){
