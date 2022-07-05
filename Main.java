@@ -6,7 +6,7 @@ package com.mycompany.graphing;
 
 /**
  *
- * @author Bashar Jirjees
+ * @author basha
  */
 import java.util.ArrayList;
 import java.util.List;
@@ -40,8 +40,8 @@ public class Main {
         System.out.println("Input File Address: ");
         String fileName = scan.nextLine();
         Path path = Paths.get(fileName);
-        if(path.toString().contains(".csv")){
-            System.out.println("Please Input a .csv file only.");
+        if(!path.toString().contains(".csv")){
+            System.out.println("Please input a .csv file only.");
             System.exit(0);
             
         }
