@@ -21,13 +21,15 @@ public class Graphing extends JPanel {
     
  
     List <String> x_y_Coordinates;
-    
+    final String x_axis_label;
+    final String y_axis_label;
     
     public Graphing(List<String> data){
         
-      x_y_Coordinates = new ArrayList<>(data);  
+      x_y_Coordinates = new ArrayList<>(data);
       x_y_Coordinates = adjustData(x_y_Coordinates);
-      
+      x_axis_label = x_y_Coordinates.get(0);
+      y_axis_label = x_y_Coordinates.get(1);
     }
     
     @Override
@@ -44,11 +46,14 @@ public class Graphing extends JPanel {
     }
     private void drawAxis_and_Text(Graphics2D plot){
         
+        
         plot.setColor(Color.BLACK);
         plot.draw(new Line2D.Double(60,400,360,400));
         plot.draw(new Line2D.Double(60,100,60,400));
-        plot.setFont(new Font("Serif Plain",Font.PLAIN,10));
-        
+        plot.setFont(new Font("Serif Plain",Font.BOLD,15));
+        plot.drawString(x_axis_label,400,400);
+        plot.drawString(y_axis_label,85,90);
+        plot.setFont(new Font("Serif Plain",Font.BOLD,10));
         for(int x = 75, y = 385; x<=400 && y >=100 ; x+=30, y-=30){
             
         plot.draw(new Line2D.Double(x,410,x,400));
