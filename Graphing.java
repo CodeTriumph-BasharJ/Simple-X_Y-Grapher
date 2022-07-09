@@ -113,8 +113,11 @@ public class Graphing extends JPanel {
         plot.drawString(String.valueOf(decimalRound.format(y_axis_data.get(y_axis_data.size() - 1))),10,114);
         if(x_axis_data.size()>2) {
             
-            plot.drawString(String.valueOf(decimalRound.format(x_axis_data.get((Integer)(x_axis_data.size()/2)))), 180, 420);
-            plot.drawString(String.valueOf(decimalRound.format(y_axis_data.get((Integer)(y_axis_data.size()/2)))), 10, 237);
+            if(Double.compare(x_axis_data.get(x_axis_data.size() / 2),x_axis_data.get(x_axis_data.size() - 1)) != 0)
+                plot.drawString(String.valueOf(decimalRound.format(x_axis_data.get((Integer)(x_axis_data.size()/2)))), 180, 420);
+            
+            if(Double.compare(y_axis_data.get(y_axis_data.size() / 2),y_axis_data.get(y_axis_data.size() - 1)) != 0)
+                plot.drawString(String.valueOf(decimalRound.format(y_axis_data.get((Integer)(y_axis_data.size()/2)))), 10, 237);
         }
      
         draw_Dots(unmodified_x_axis_data,unmodified_y_axis_data,x_axis_data,
@@ -125,30 +128,37 @@ public class Graphing extends JPanel {
     private void draw_Dots(List <Double> unsorted_x_values, List <Double> unsorted_y_values,List <Double> sorted_x_values, List <Double> sorted_y_values, Graphics2D plot){
      
      final int size = sorted_x_values.size();
-   
-     
      List<Double> coordinates= new ArrayList<>();
      List<Double> x_scale= new ArrayList<>(x_interval(size));
      List<Double> y_scale= new ArrayList<>(y_interval(size));
      plot.setPaint(Color.BLUE);
      
     for(int i = 0; i < size - 1; ++i){
-      
-           coordinates.add (x_scale.get(sorted_x_values.indexOf(unsorted_x_values.get(i))));
-           coordinates.add (y_scale.get(sorted_y_values.indexOf(unsorted_y_values.get(i))));
-           
-    }
-      
-    for(int i = 0; i < coordinates.size() - 1; i+=2)
-        plot.draw(new Ellipse2D.Double(coordinates.get(i),coordinates.get(i+1),7,7));
+            if(Double.compare(sorted_x_values.get(i),sorted_x_values.get(i+1)) != 0)
+                coordinates.add (x_scale.get(sorted_x_values.indexOf(unsorted_x_values.get(i))));
+            else 
+                coordinates.add(x_scale.get(sorted_x_values.lastIndexOf(sorted_x_values.get(i))));
             
-       
+           coordinates.add (y_scale.get(sorted_y_values.indexOf(unsorted_y_values.get(i))));
+    }
+    
+    
+    for(int i = 0, j = 0; i < coordinates.size() - 1; i+= 2){
+        if(Double.compare(sorted_x_values.get(j),sorted_x_values.get(j+1)) != 0){
+            plot.draw(new Ellipse2D.Double(coordinates.get(i),coordinates.get(i+1),7,7));
+            
+        } else draw_similar_x_values(coordinates, i, plot);
+        
+        if(j%2 == 0) ++j;
+
+            }
     }
     
     private List<Double> x_interval(int size){
         
         List <Double> interval_x = new ArrayList<>();
-        final int summation = (360 - 60)/ size;
+        final double summation = (double)(360 - 60)/ size;
+        
         for(double i = 60; i <= 360; i+= summation ) interval_x.add(i);
         
         return interval_x;
@@ -157,10 +167,23 @@ public class Graphing extends JPanel {
     private List<Double> y_interval(int size){
        
         List <Double> interval_y = new ArrayList<>();
-        final int deduction = (400 - 100) / size;
-        for(double i = 400; i >= 100 ; i-= deduction) interval_y.add(i);
+        final double deduction = (double)(400 - 100) / size;
+        for(double i = 390; i >= 100 ; i-= deduction) interval_y.add(i);
 
         return interval_y;
         
     }
+    
+    private void draw_similar_x_values(List<Double> coordinates, int index, Graphics2D plot){
+        
+        int last_index =  coordinates.lastIndexOf(coordinates.get(index));
+        final int counter = Collections.frequency(coordinates, coordinates.get(index));
+        
+        for(int i = 0; i < counter && last_index < coordinates.size(); ++i){
+             plot.draw(new Ellipse2D.Double(coordinates.get(last_index),coordinates.get(i+1),7,7));
+            
+        }
+        
+    }
+    
 }
