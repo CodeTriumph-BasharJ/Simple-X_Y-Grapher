@@ -143,12 +143,13 @@ public class Graphing extends JPanel {
     }
     
     
+    
     for(int i = 0, j = 0; i < coordinates.size() - 1; i+= 2){
         if(Double.compare(sorted_x_values.get(j),sorted_x_values.get(j+1)) != 0){
             plot.draw(new Ellipse2D.Double(coordinates.get(i),coordinates.get(i+1),7,7));
             
-        } else draw_similar_x_values(coordinates, i, plot);
-        
+        } else draw_similar_x_values(coordinates,sorted_x_values,i, sorted_x_values.get(j), plot);
+
         if(j%2 == 0) ++j;
 
             }
@@ -168,18 +169,34 @@ public class Graphing extends JPanel {
        
         List <Double> interval_y = new ArrayList<>();
         final double deduction = (double)(400 - 100) / size;
+        
         for(double i = 390; i >= 100 ; i-= deduction) interval_y.add(i);
 
         return interval_y;
         
     }
     
-    private void draw_similar_x_values(List<Double> coordinates, int index, Graphics2D plot){
+    private void draw_similar_x_values(List<Double> coordinates, List<Double> sorted_x_values, int index, double repetitive, Graphics2D plot){
+        
+        int last_index =  coordinates.lastIndexOf(coordinates.get(index));
+        final int counter = Collections.frequency(sorted_x_values, repetitive);
+        
+        //issue
+        for(int i = 0; i < counter * 2; i+=2){
+             plot.draw(new Ellipse2D.Double(coordinates.get(last_index),coordinates.get(i+1),7,7));
+             
+            
+        }
+        
+    }
+    
+    //continue here
+        private void draw_similar_y_values(List<Double> coordinates, int index, Graphics2D plot){
         
         int last_index =  coordinates.lastIndexOf(coordinates.get(index));
         final int counter = Collections.frequency(coordinates, coordinates.get(index));
         
-        for(int i = 0; i < counter && last_index < coordinates.size(); i+=2){
+        for(int i = 0; i < counter && last_index < coordinates.size(); ++i){
              plot.draw(new Ellipse2D.Double(coordinates.get(last_index),coordinates.get(i+1),7,7));
             
         }
