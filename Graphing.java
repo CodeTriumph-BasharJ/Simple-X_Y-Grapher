@@ -179,7 +179,7 @@ public class Graphing extends JPanel {
         int last_index =  coordinates.lastIndexOf(coordinates.get(index));
         final int counter = Collections.frequency(coordinates, coordinates.get(index));
         
-        for(int i = 0; i < counter && last_index < coordinates.size(); ++i){
+        for(int i = 0; i < counter && last_index < coordinates.size(); i+=2){
              plot.draw(new Ellipse2D.Double(coordinates.get(last_index),coordinates.get(i+1),7,7));
             
         }
