@@ -150,7 +150,7 @@ public class Graphing extends JPanel {
              if(Double.compare(first_half_y,second_half_y) > 0) position_y = (1 - position_y/300) * 300;
              if(second_half_y == 0) position_y = 380;
              else if(first_half_y == 0) position_y = 110;
-            System.out.println(position_x+"    "+position_y);
+        
             plot.draw(new Ellipse2D.Double(position_x,position_y,7,7));  
      }
   }
