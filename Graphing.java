@@ -16,6 +16,7 @@ import java.util.List;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.text.DecimalFormat;
+import java.lang.Math;
 
 public class Graphing extends JPanel {
     
@@ -125,92 +126,32 @@ public class Graphing extends JPanel {
       
     }
     
-    private void draw_Dots(List <Double> unsorted_x_values, List <Double> unsorted_y_values,List <Double> sorted_x_values, List <Double> sorted_y_values, Graphics2D plot){
+    private void draw_Dots(List <Double> unsorted_x_values, List <Double> unsorted_y_values,List <Double> sorted_x_values,
+            List <Double> sorted_y_values, Graphics2D plot){
      
-     final int size = sorted_x_values.size();
-     List<Double> coordinates= new ArrayList<>();
-     List<Double> x_scale= new ArrayList<>(x_interval(size));
-     List<Double> y_scale= new ArrayList<>(y_interval(size));
-     List<Double> drawn = new ArrayList<>();
-     plot.setPaint(Color.BLUE);
-     
-    for(int i = 0; i < size - 1; ++i){
-            if(Double.compare(sorted_x_values.get(i),sorted_x_values.get(i+1)) != 0)
-                coordinates.add (x_scale.get(sorted_x_values.indexOf(unsorted_x_values.get(i))));
-            else 
-                coordinates.add(x_scale.get(sorted_x_values.lastIndexOf(sorted_x_values.get(i))));
-                
-            
-           coordinates.add (y_scale.get(sorted_y_values.indexOf(unsorted_y_values.get(i))));
-    }
+    final int size = sorted_x_values.size();
+    double first_half_x , second_half_x, first_half_y , second_half_y;
+    int position_x, position_y;
     
-    
-    
-    for(int i = 0, j = 0; i < coordinates.size() - 1 ; i+= 2){
-        if(Double.compare(sorted_x_values.get(j),sorted_x_values.get(j+1)) != 0 && !drawn.contains(sorted_x_values.get(j))){
-            plot.draw(new Ellipse2D.Double(coordinates.get(i),coordinates.get(i+1),7,7));
-            
-            
-        } else if(!drawn.contains(sorted_x_values.get(j))) {
-            draw_similar_x_values(coordinates,sorted_x_values,i, sorted_x_values.get(j), plot);
-            drawn.add(sorted_x_values.get(j));
-        }
-        
-        if(i % 2 == 0)++j;
-        
-
-            }
-    }
-    
-    private List<Double> x_interval(int size){
-        
-        List <Double> interval_x = new ArrayList<>();
-        
-        final double summation = (double)(360 - 60)/ size;
-        
-        for(double i = 60; i <= 360; i+= summation ) interval_x.add(i);
-        
-        return interval_x;
-    }
- 
-    private List<Double> y_interval(int size){
+    for(int j = 0; j < size ; j++){
        
-        List <Double> interval_y = new ArrayList<>();
-        final double deduction = (double)(400 - 100) / size;
-        
-        for(double i = 390; i >= 100 ; i-= deduction) interval_y.add(i);
-
-        return interval_y;
-        
-    }
-    
-    private void draw_similar_x_values(List<Double> coordinates, List<Double> sorted_x_values, int index, double repetitive, Graphics2D plot){
-        
-        int last_index =  coordinates.lastIndexOf(coordinates.get(index));
-        final int counter = Collections.frequency(sorted_x_values, repetitive);
-        
-        //issue
-        for(int i = 0; i < counter * 2; i+=2){
-             plot.draw(new Ellipse2D.Double(coordinates.get(last_index),coordinates.get(i+1),7,7));
-             
+            first_half_x = Math.round(unsorted_x_values.get(j)- sorted_x_values.get(0));
+            second_half_x = Math.round(sorted_x_values.get(size - 1)- unsorted_x_values.get(j));  
+            position_x = first_half_x == second_half_x ? (360 / 2) : (int)(300 * 
+                    (second_half_x/(sorted_x_values.get(size - 1) - sorted_x_values.get(0))));
+             if(Double.compare(first_half_x, second_half_x) > 0) position_x = (1 - position_x/300) * 300;
+             if(second_half_x == 0) position_x = 340;
+             else if(first_half_x == 0) position_x = 70;
             
-        }
-        
-    }
-    
-   
-        private void draw_similar_y_values(List<Double> coordinates, List<Double> sorted_x_values, int index, double repetitive, Graphics2D plot){
-        
-        int last_index =  coordinates.lastIndexOf(coordinates.get(index));
-        final int counter = Collections.frequency(sorted_x_values, repetitive);
-        
-        //issue
-        for(int i = 0; i < counter * 2; i+=2){
-             plot.draw(new Ellipse2D.Double(coordinates.get(last_index),coordinates.get(i+1),7,7));
-             
-            
-        }
-        
-    }
-    
+            first_half_y = Math.round(unsorted_y_values.get(j)- sorted_y_values.get(0));
+            second_half_y = Math.round(sorted_y_values.get(size - 1)- unsorted_y_values.get(j));
+            position_y = first_half_y == second_half_y ? (360/2) : (int)(300 * 
+                    (second_half_y/(sorted_y_values.get(size - 1) - sorted_y_values.get(0))));
+             if(Double.compare(first_half_y,second_half_y) > 0) position_y = (1 - position_y/300) * 300;
+             if(second_half_y == 0) position_y = 380;
+             else if(first_half_y == 0) position_y = 110;
+            System.out.println(position_x+"    "+position_y);
+            plot.draw(new Ellipse2D.Double(position_x,position_y,7,7));  
+     }
+  }
 }
