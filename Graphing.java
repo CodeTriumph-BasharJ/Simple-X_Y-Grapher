@@ -5,7 +5,6 @@
 package com.mycompany.graphing;
 
 /**
- *
  * @author Bashar Jirjees
  */
 
@@ -25,6 +24,11 @@ public class Graphing extends JPanel {
     final String x_axis_label;
     final String y_axis_label;
     
+    /**
+     * Graphing class constructor that accepts and organizes file's data array.
+     * 
+     * @param data data list that contains the data read and passed form the csv file.
+     */
     public Graphing(List<String> data){
         
       x_y_Coordinates = new ArrayList<>(data);
@@ -33,6 +37,11 @@ public class Graphing extends JPanel {
       y_axis_label = x_y_Coordinates.get(1);
     }
     
+    /**
+     * paintComponent method from JPanel super class is overriden to generate the graphing plot.
+     * 
+     * @param graph graph class object that represent the 2D graph that is plotted.
+     */
     @Override
     protected void paintComponent(Graphics graph){
         
@@ -45,6 +54,13 @@ public class Graphing extends JPanel {
         draw_Data(x_y_Coordinates,plot);
        
     }
+    
+    /**
+     * drawAxis_and_Text method that draws both x and y axis without the data.
+     * 
+     * @param plot plot a Graphics2D class objet that is used to set the dimensions
+     * necessary for both axis.
+     */
     private void drawAxis_and_Text(Graphics2D plot){
         
         
@@ -62,10 +78,16 @@ public class Graphing extends JPanel {
        
         
         }
-        
-        
+   
     }
     
+    /**
+     * adjustData method that takes the file's data list and removes all commas 
+     * and separates all the 2 words in each index too a single index.
+     * 
+     * @param Data Data list that contains all file data.
+     * @return Data list.
+     */
     private List<String> adjustData(List<String> Data){
         
         List <String> dataFinal = new ArrayList<>();
@@ -91,6 +113,13 @@ public class Graphing extends JPanel {
         return dataFinal;
     }
     
+    /**
+     * draw_Data method that plots the x and y axis data and scale them appropriately.
+     * 
+     * @param data data adjusted list.
+     * @param plot plot a Graphics2D object that is used to plot the data and 
+     * draw each axis scale.
+     */
     private void draw_Data(List <String> data, Graphics2D plot){
         List<Double> x_axis_data = new ArrayList<>(), y_axis_data = new ArrayList<>();
         List<Double> unmodified_x_axis_data = new ArrayList<>(),unmodified_y_axis_data = new ArrayList<>();
@@ -126,6 +155,15 @@ public class Graphing extends JPanel {
       
     }
     
+    /**
+     * draw_Dots method that plots all the data on the graph.
+     * 
+     * @param unsorted_x_values unsorted_x_values list with unsorted x axis data.
+     * @param unsorted_y_values unsorted_y_values list with unsorted y axis data.
+     * @param sorted_x_values sorted_x_values list with sorted x axis data.
+     * @param sorted_y_values sorted_y_values list with sorted y axis data.
+     * @param plot plot a Graphics2D object that is used to plot the data.
+     */
     private void draw_Dots(List <Double> unsorted_x_values, List <Double> unsorted_y_values,List <Double> sorted_x_values,
             List <Double> sorted_y_values, Graphics2D plot){
      
@@ -150,7 +188,7 @@ public class Graphing extends JPanel {
              if(Double.compare(first_half_y,second_half_y) > 0) position_y = (1 - position_y/300) * 300;
              if(second_half_y == 0) position_y = 380;
              else if(first_half_y == 0) position_y = 110;
-        
+             
             plot.draw(new Ellipse2D.Double(position_x,position_y,7,7));  
      }
   }
