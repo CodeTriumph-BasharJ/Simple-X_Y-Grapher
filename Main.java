@@ -5,8 +5,7 @@
 package com.mycompany.graphing;
 
 /**
- *
- * @author basha
+ * @author Bashar Jirjees
  */
 import java.util.ArrayList;
 import java.util.List;
