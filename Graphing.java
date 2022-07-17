@@ -5,6 +5,7 @@
 package com.mycompany.graphing;
 
 /**
+ *
  * @author Bashar Jirjees
  */
 
@@ -135,7 +136,7 @@ public class Graphing extends JPanel {
       
         Collections.sort(x_axis_data);
         Collections.sort(y_axis_data);
-        
+       
         plot.drawString(String.valueOf(decimalRound.format(x_axis_data.get(0))),60,420);
         plot.drawString(String.valueOf(decimalRound.format(x_axis_data.get(x_axis_data.size() - 1))),330,420);
         
@@ -156,6 +157,7 @@ public class Graphing extends JPanel {
     }
     
     /**
+     * 
      * draw_Dots method that plots all the data on the graph.
      * 
      * @param unsorted_x_values unsorted_x_values list with unsorted x axis data.
@@ -168,28 +170,28 @@ public class Graphing extends JPanel {
             List <Double> sorted_y_values, Graphics2D plot){
      
     final int size = sorted_x_values.size();
+    final double difference_x = sorted_x_values.get(size - 1) - sorted_x_values.get(0);
+    final double difference_y = sorted_y_values.get(size - 1) - sorted_y_values.get(0);
     double first_half_x , second_half_x, first_half_y , second_half_y;
     int position_x, position_y;
     
     for(int j = 0; j < size ; j++){
        
-            first_half_x = Math.round(unsorted_x_values.get(j)- sorted_x_values.get(0));
-            second_half_x = Math.round(sorted_x_values.get(size - 1)- unsorted_x_values.get(j));  
-            position_x = first_half_x == second_half_x ? (360 / 2) : (int)(300 * 
-                    (second_half_x/(sorted_x_values.get(size - 1) - sorted_x_values.get(0))));
+            first_half_x = (unsorted_x_values.get(j)- sorted_x_values.get(0))/ difference_x;
+            second_half_x = (sorted_x_values.get(size - 1)- unsorted_x_values.get(j)) / difference_x;  
+            position_x = first_half_x == second_half_x ? (360 / 2) : (int)(300 * second_half_x);
              if(Double.compare(first_half_x, second_half_x) > 0) position_x = (1 - position_x/300) * 300;
              if(second_half_x == 0) position_x = 340;
              else if(first_half_x == 0) position_x = 70;
             
-            first_half_y = Math.round(unsorted_y_values.get(j)- sorted_y_values.get(0));
-            second_half_y = Math.round(sorted_y_values.get(size - 1)- unsorted_y_values.get(j));
-            position_y = first_half_y == second_half_y ? (360/2) : (int)(300 * 
-                    (second_half_y/(sorted_y_values.get(size - 1) - sorted_y_values.get(0))));
+            first_half_y = (unsorted_y_values.get(j)- sorted_y_values.get(0)) / difference_y ;
+            second_half_y = (sorted_y_values.get(size - 1)- unsorted_y_values.get(j)) / difference_y;
+            position_y = first_half_y == second_half_y ? (360/2) : (int)(300 * second_half_y);
              if(Double.compare(first_half_y,second_half_y) > 0) position_y = (1 - position_y/300) * 300;
-             if(second_half_y == 0) position_y = 380;
-             else if(first_half_y == 0) position_y = 110;
+             if(second_half_y == 0) position_y = 110;
+             else if(first_half_y == 0) position_y = 380;
              
-            plot.draw(new Ellipse2D.Double(position_x,position_y,7,7));  
+            plot.draw(new Ellipse2D.Double(position_x, position_y, 7, 7));  
      }
   }
 }
