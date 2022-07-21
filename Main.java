@@ -1,8 +1,3 @@
-/*
- * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
- * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Main.java to edit this template
- */
-package com.mycompany.graphing;
 
 /**
  * @author Bashar Jirjees
@@ -18,6 +13,8 @@ import java.util.Scanner;
 public class Main {
 
     /**
+     * Main method that generated the frame needed for the plot area.
+     * 
      * @param args the command line arguments
      */
     public static void main(String[] args)  {
@@ -33,6 +30,12 @@ public class Main {
     
     }
     
+    /**
+     * file_open method that takes the .csv file location and returns a list of
+     * the its data.
+     * 
+     * @return List read_file(List) where it contains all the .csv file data.
+     */
     private static List<String> file_open(){
         
         Scanner scan = new Scanner(System.in);
@@ -48,6 +51,14 @@ public class Main {
         
         
     }
+    
+    /**
+     * read_file method that takes the location of the specified .csv file and 
+     * returns the a list of all its data.
+     * 
+     * @param path path of the specified .csv file.
+     * @return Data Data list of the .csv file.
+     */
     private static List<String> read_file(Path path){
         List <String> Data = new ArrayList<>();
         try(Stream <String> fileData = Files.lines(path)){
