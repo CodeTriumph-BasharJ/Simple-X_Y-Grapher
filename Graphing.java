@@ -171,34 +171,22 @@ public class Graphing extends JPanel {
      
     final int size = sorted_x_values.size();
     final double difference_x = sorted_x_values.get(size - 1) - sorted_x_values.get(0),
-                 difference_y = sorted_y_values.get(size - 1) - sorted_y_values.get(0),
-                 height = Math.sqrt(Math.pow(340,2) + Math.pow(380,2));
-    double first_half_x , second_half_x, first_half_y , second_half_y,
-           position_x, position_y;
-    double temp = 1;
+                 difference_y = sorted_y_values.get(size - 1) - sorted_y_values.get(0);
+                
+    double first_half_x , first_half_y,
+           position_x = 70, position_y = 380;
+
     for(int j = 0; j < size ; j++){
        
             first_half_x =  (unsorted_x_values.get(j) - sorted_x_values.get(0)) / difference_x;
-            second_half_x = (sorted_x_values.get(size - 1)- unsorted_x_values.get(j)) / difference_x;  
-        
-             if(second_half_x == 0) position_x = 340;
-             else if(first_half_x == 0) position_x = 70;
-             else if (Double.compare(first_half_x, second_half_x) < 0) position_x = first_half_x * 380 + 70;
-             else if (Double.compare(first_half_x, second_half_x) > 0) position_x = second_half_x * 380 + 70;
-             else position_x = 237;
-       
             first_half_y = (unsorted_y_values.get(j)- sorted_y_values.get(0)) / difference_y ;
-            second_half_y = (sorted_y_values.get(size - 1)- unsorted_y_values.get(j)) / difference_y;
             
-             if(second_half_y == 0) position_y = 110;
-             else if(first_half_y == 0) position_y = 380;             
-             else if (Double.compare(first_half_y, second_half_y) > 0) position_y = first_half_y * 380 ;
-             else if (Double.compare(first_half_y, second_half_y) < 0) position_y = second_half_y * 380 ;
-             else position_y = 237;
-             
-          
+            position_x += first_half_x * 270;
+            position_y -= first_half_y * 270;
             
             plot.draw(new Ellipse2D.Double(position_x, position_y, 7, 7));  
+            position_x = 70;
+            position_y = 380;
      }
   }
 }
